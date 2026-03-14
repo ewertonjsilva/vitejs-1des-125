@@ -17,5 +17,5 @@
     border-radius: 1rem;
     padding: 1rem;
     height: 45vh; 
-    overflow-y: hidden;
+    overflow-y: auto;
 }
