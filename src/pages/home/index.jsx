@@ -8,11 +8,16 @@ function Home() {
     <div className={styles.container}>
       <div className={styles.containerLista}>
         <h1>Exemplos</h1>
-        <Link to="/exemplo/1">Exemplo 1</Link>
-        <Link to="/exemplo/2">Exemplo 2</Link>
+        <Link to="/exemplo/1">Exemplo 1 - Componente básico</Link>
+        <Link to="/exemplo/2">Exemplo 2 - Estilização com module</Link>
+        <Link to="/exemplo/3">Exemplo 3 - Mockup</Link>
+        <Link to="/exemplo/4">Exemplo 4 - Mockup + Local Storage</Link>
       </div>
       <div className={styles.containerLista}>
         <h1>Atividades</h1>
+        <Link to="/atividade/1">Atividade 1 - Componente básico</Link>
+        <Link to="/atividade/2">Atividade 2 - Estilização básica</Link>
+        <Link to="/atividade/3">Atividade 3 - Local Storage</Link>
       </div>
     </div>
   )
