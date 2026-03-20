@@ -10,8 +10,10 @@ function Home() {
         <h1>Exemplos</h1>
         <Link to="/exemplo/1">Exemplo 1 - Componente básico</Link>
         <Link to="/exemplo/2">Exemplo 2 - Estilização com module</Link>
-        <Link to="/exemplo/3">Exemplo 3 - Mockup</Link>
-        <Link to="/exemplo/4">Exemplo 4 - Mockup + Local Storage</Link>
+        <Link to="/exemplo/3">Exemplo 3 - State</Link>
+        <Link to="/exemplo/4">Exemplo 4 - Componentes</Link>
+        <Link to="/exemplo/98">Exemplo ? - Mockup</Link>
+        <Link to="/exemplo/99">Exemplo ? - Mockup + Local Storage</Link>
       </div>
       <div className={styles.containerLista}>
         <h1>Atividades</h1>
