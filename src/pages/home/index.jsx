@@ -12,14 +12,16 @@ function Home() {
         <Link to="/exemplo/2">Exemplo 2 - Estilização com module</Link>
         <Link to="/exemplo/3">Exemplo 3 - State</Link>
         <Link to="/exemplo/4">Exemplo 4 - Componentes</Link>
-        <Link to="/exemplo/98">Exemplo ? - Mockup</Link>
-        <Link to="/exemplo/99">Exemplo ? - Mockup + Local Storage</Link>
+        <Link to="/exemplo/5">Exemplo 5 - Mockup</Link>
+        <Link to="/exemplo/6">Exemplo 6 - Mockup + Local Storage</Link>
       </div>
       <div className={styles.containerLista}>
         <h1>Atividades</h1>
         <Link to="/atividade/1">Atividade 1 - Componente básico</Link>
         <Link to="/atividade/2">Atividade 2 - Estilização básica</Link>
-        <Link to="/atividade/3">Atividade 3 - Local Storage</Link>
+        <Link to="/atividade/3">Atividade 3 - ?</Link>
+        <Link to="/atividade/4">Atividade 4 - Form básico</Link>
+        <Link to="/atividade/5">Atividade 5 - Local Storage</Link>
       </div>
     </div>
   )

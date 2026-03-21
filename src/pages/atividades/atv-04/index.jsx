@@ -1,5 +1,5 @@
 import { useState } from 'react';  
-import { Pencil, Trash2, Plus, X, Save } from 'lucide-react';
+import { Pencil, Trash2, Plus, Save } from 'lucide-react';
 
 import styles from './index.module.css';
 
@@ -75,8 +75,8 @@ function Atividade02() {
         {items.map((item) => (
           <li key={item.id} className={styles.linha}>
             <span className={styles.conteudo}>{item.text}</span>
-            <button onClick={() => startEdit(item)}><Pencil size={16} color="#4a90e2" /></button>
-            <button onClick={() => deleteItem(item.id)}><Trash2 size={16} color="#e74c3c" /></button>
+            <button onClick={() => startEdit(item)} className={styles.botao}><Pencil size={16} color="#4a90e2" /></button>
+            <button onClick={() => deleteItem(item.id)} className={styles.botao}><Trash2 size={16} color="#e74c3c" /></button>
           </li>
         ))}
       </ul>
