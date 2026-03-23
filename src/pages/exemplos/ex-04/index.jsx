@@ -13,12 +13,12 @@ function Exemplo04() {
 
   return (
     <div className={styles.container}>
-      <h1>Meu Primeiro Projeto Vite + React</h1>
+      <h1>Exemplo 4 - Uso de componentes</h1>
       <h2>O valor atual é: {contador}</h2>
       
       {/* Passando funções e textos via Props para o componente Botao */}
-      <Botao texto="Diminuir -" aoClicar={decrementar} />
-      <Botao texto="Aumentar +" aoClicar={incrementar} />
+      <Botao texto="Diminuir -" aoClicar={decrementar} acao={'-'} />
+      <Botao texto="Aumentar +" aoClicar={incrementar} acao={'+'} />
     </div>
   );
 }

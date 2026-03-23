@@ -1,9 +1,15 @@
 import styles from './index.module.css';
 
 function Botao({ texto, aoClicar, acao }) {
+
+    let style = [styles.botao];
+    
+    if (texto == 'Cadastrar') style.push(styles.cadastro);
+    console.log(style);
+    
     return (
         <button
-            className={`${styles.botao} ${acao === '+' ? styles.mais : styles.menos}`}
+            className={style}
             onClick={aoClicar}
         >
             {texto}
