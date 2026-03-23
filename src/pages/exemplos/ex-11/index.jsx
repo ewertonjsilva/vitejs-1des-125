@@ -1,9 +1,8 @@
-import { useState } from 'react';  
-import { Pencil, Trash2, Plus, Save } from 'lucide-react';
+import { useState } from 'react'; 
 
 import styles from './index.module.css';
 
-function Atividade02() {
+function Exemplo11() {
   // Mock de dados inicial (READ)
   const [items, setItems] = useState([
     { id: 1, text: 'Aprender Vite.js' },
@@ -60,7 +59,6 @@ function Atividade02() {
           placeholder="Digite algo..."
         />
         <button type="submit">
-          {editingId ? <Save size={18} /> : <Plus size={18} />}
           {editingId ? 'Salvar Edição' : 'Adicionar'}
         </button>
         {
@@ -75,8 +73,8 @@ function Atividade02() {
         {items.map((item) => (
           <li key={item.id} className={styles.linha}>
             <span className={styles.conteudo}>{item.text}</span>
-            <button onClick={() => startEdit(item)} className={styles.botao}><Pencil size={16} color="#4a90e2" /></button>
-            <button onClick={() => deleteItem(item.id)} className={styles.botao}><Trash2 size={16} color="#e74c3c" /></button>
+            <button onClick={() => startEdit(item)}>Editar</button>
+            <button onClick={() => deleteItem(item.id)}>Excluir</button>
           </li>
         ))}
       </ul>
@@ -84,4 +82,4 @@ function Atividade02() {
   );
 }
 
-export default Atividade02;
+export default Exemplo11;

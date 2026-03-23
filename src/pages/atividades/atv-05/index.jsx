@@ -1,133 +1,87 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';  
+import { Pencil, Trash2, Plus, Save } from 'lucide-react';
 
-export default function Atividade03() {
-    const [lista, setLista] = useState([]);
-    const [editingId, setEditingId] = useState(null); // Estado para controlar edição
+import styles from './index.module.css';
 
-    const initialForm = {
-        nome: '', email: '', nascimento: '', idade: 0,
-        corFavorita: '#4f46e5', categoria: '', genero: 'M',
-        ativo: true, bio: '', avatar: 'https://i.pravatar.cc/150'
-    };
+function Atividade02() {
+  // Mock de dados inicial (READ)
+  const [items, setItems] = useState([
+    { id: 1, text: 'Aprender Vite.js' },
+    { id: 2, text: 'Estudar CRUD' }
+  ]);
 
-    const [form, setForm] = useState(initialForm);
+  const [inputValue, setInputValue] = useState('');
+  const [editingId, setEditingId] = useState(null);
 
-    useEffect(() => {
-        // Simulação de leitura de API JSON
-        const dados = [
-            { id: 1, nome: 'Ewerton Prof', email: 'ewerton@etec.sp.gov.br', categoria: 'Admin', avatar: 'https://i.pravatar.cc/150?u=1' }
-        ];
-        setLista(dados);
-    }, []);
+  // --- MÉTODOS DO CRUD ---
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
-    };
+  // CREATE ou UPDATE
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
 
-    // --- FUNÇÕES DO CRUD ---
+    if (editingId) {
+      // Lógica de UPDATE
+      setItems(items.map(item => 
+        item.id === editingId ? { ...item, text: inputValue } : item
+      ));
+      setEditingId(null);
+    } else {
+      // Lógica de CREATE
+      const newItem = {
+        id: Date.now(),
+        text: inputValue
+      };
+      setItems([...items, newItem]);
+    }
+    setInputValue('');
+  };
 
-    const handleSalvar = (e) => {
-        e.preventDefault();
+  // DELETE
+  const deleteItem = (id) => {
+    setItems(items.filter(item => item.id !== id));
+  };
 
-        if (editingId) {
-            // UPDATE: Mapeia a lista e substitui o item com o ID correspondente
-            const listaAtualizada = lista.map(item =>
-                item.id === editingId ? { ...form, id: editingId } : item
-            );
-            setLista(listaAtualizada);
-            setEditingId(null);
-        } else {
-            // CREATE: Adiciona novo item com ID único
-            setLista([...lista, { ...form, id: Date.now() }]);
+  // Prepara o formulário para edição
+  const startEdit = (item) => {
+    setEditingId(item.id);
+    setInputValue(item.text);
+  };
+
+  return (
+    <div className={styles.container}>
+      <h1>Mockup CRUD Vite</h1>
+
+      <form onSubmit={handleSubmit}>
+        <input 
+          type="text" 
+          value={inputValue} 
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Digite algo..."
+        />
+        <button type="submit">
+          {editingId ? <Save size={18} /> : <Plus size={18} />}
+          {editingId ? 'Salvar Edição' : 'Adicionar'}
+        </button>
+        {
+            editingId && 
+            <button onClick={() => {setEditingId(null); setInputValue('');}}>
+                Cancelar
+            </button>
         }
+      </form>
 
-        setForm(initialForm); // Limpa o formulário
-    };
-
-    const handleEdit = (item) => {
-        setEditingId(item.id);
-        setForm(item); // Preenche o formulário com os dados do item
-        window.scrollTo(0, 0); // Sobe a página para o formulário
-    };
-
-    const handleDelete = (id) => {
-        if (window.confirm("Deseja realmente excluir este registro?")) {
-            // DELETE: Filtra a lista removendo o ID selecionado
-            setLista(lista.filter(item => item.id !== id));
-        }
-    };
-
-    const cancelarEdicao = () => {
-        setEditingId(null);
-        setForm(initialForm);
-    };
-
-    return (
-        <div className="container">
-            <h1 style={{ color: editingId ? '#f59e0b' : '#4f46e5' }}>
-                {editingId ? '📝 Editando Usuário' : '➕ Cadastrar Usuário'}
-            </h1>
-
-            <form onSubmit={handleSalvar} className={editingId ? 'editing-mode' : ''}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                    <section>
-                        <label>Nome</label>
-                        <input type="text" name="nome" value={form.nome} onChange={handleChange} required />
-
-                        <label>E-mail</label>
-                        <input type="email" name="email" value={form.email} onChange={handleChange} />
-
-                        <label>Idade</label>
-                        <input type="number" name="idade" value={form.idade} onChange={handleChange} />
-                    </section>
-
-                    <section>
-                        <label>Nível</label>
-                        <select name="categoria" value={form.categoria} onChange={handleChange}>
-                            <option value="">Selecione...</option>
-                            <option value="Admin">Admin</option>
-                            <option value="User">User</option>
-                        </select>
-
-                        <label>Gênero</label>
-                        <div className="inline-group">
-                            <input type="radio" name="genero" value="M" checked={form.genero === 'M'} onChange={handleChange} /> M
-                            <input type="radio" name="genero" value="F" checked={form.genero === 'F'} onChange={handleChange} /> F
-                        </div>
-
-                        <div className="inline-group">
-                            <input type="checkbox" name="ativo" checked={form.ativo} onChange={handleChange} />
-                            <label>Ativo</label>
-                        </div>
-                    </section>
-                </div>
-
-                <button type="submit">{editingId ? 'Atualizar Dados' : 'Salvar Novo'}</button>
-                {editingId && <button type="button" className="btn-cancel" onClick={cancelarEdicao}>Cancelar</button>}
-            </form>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Avatar</th>
-                        <th>Nome</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {lista.map(item => (
-                        <tr key={item.id}>
-                            <td><img src={item.avatar} alt="User" width="40" /></td>
-                            <td>{item.nome} <br /> <small>{item.email}</small></td>
-                            <td>
-                                <button className="btn-edit" onClick={() => handleEdit(item)}>Editar</button>
-                                <button className="btn-delete" onClick={() => handleDelete(item.id)}>Excluir</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+      <ul className={styles.lista}>
+        {items.map((item) => (
+          <li key={item.id} className={styles.linha}>
+            <span className={styles.conteudo}>{item.text}</span>
+            <button onClick={() => startEdit(item)} className={styles.botao}><Pencil size={16} color="#4a90e2" /></button>
+            <button onClick={() => deleteItem(item.id)} className={styles.botao}><Trash2 size={16} color="#e74c3c" /></button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
+
+export default Atividade02;
