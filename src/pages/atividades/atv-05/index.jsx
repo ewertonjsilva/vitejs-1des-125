@@ -3,7 +3,7 @@ import { Pencil, Trash2, Plus, Save } from 'lucide-react';
 
 import styles from './index.module.css';
 
-function Atividade02() {
+function Atividade05() {
   // Mock de dados inicial (READ)
   const [items, setItems] = useState([
     { id: 1, text: 'Aprender Vite.js' },
@@ -84,4 +84,4 @@ function Atividade02() {
   );
 }
 
-export default Atividade02;
+export default Atividade05;

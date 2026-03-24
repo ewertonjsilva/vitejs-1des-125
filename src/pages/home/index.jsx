@@ -23,10 +23,10 @@ function Home() {
       </div>
       <div className={styles.containerLista}>
         <h1>Atividades</h1>
-        <Link to="/atividade/1">Atividade 1 - Componente básico</Link>
-        <Link to="/atividade/2">Atividade 2 - Estilização básica</Link>
+        <Link to="/atividade/1">Atividade 1 - Estilização básica</Link>
+        <Link to="/atividade/2">Atividade 2 - State</Link>
         <Link to="/atividade/3">Atividade 3 - Componentes dinâmicos</Link>
-        <span>Atividade 4 - Formulário livre</span>
+        <Link to="/atividade/4">Atividade 4 - Formulário livre</Link>
         <Link to="/atividade/5">Atividade 5 - Formulário simulação</Link>
         <Link to="/atividade/6">Atividade 6 - Local Storage</Link>
       </div>

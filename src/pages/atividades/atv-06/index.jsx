@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Atividade03() {
+export default function Atividade06() {
     const [lista, setLista] = useState([]);
     const [editingId, setEditingId] = useState(null); // Estado para controlar edição
 
