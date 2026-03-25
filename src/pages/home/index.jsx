@@ -20,8 +20,6 @@ function Home() {
         <Link to="/exemplo/10">Exemplo 10 - Dashboard</Link>
         <Link to="/exemplo/11">Exemplo 11 - Mockup</Link>
         <Link to="/exemplo/12">Exemplo 12 - Mockup + Local Storage</Link>
-        <Link to="/exemplo/13">Exemplo 13 - Mockup Listagem itens</Link>
-        <Link to="/exemplo/14">Exemplo 14 - Mockup manipulação de itens</Link>
       </div>
       <div className={styles.containerLista}>
         <h1>Atividades</h1>

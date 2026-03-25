@@ -1,133 +1,231 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import styles from './index.module.css';
+import { UserPlus, Save, X } from 'lucide-react';
 
-export default function Atividade06() {
-    const [lista, setLista] = useState([]);
-    const [editingId, setEditingId] = useState(null); // Estado para controlar edição
-
-    const initialForm = {
-        nome: '', email: '', nascimento: '', idade: 0,
-        corFavorita: '#4f46e5', categoria: '', genero: 'M',
-        ativo: true, bio: '', avatar: 'https://i.pravatar.cc/150'
+const CadastroUsuario = () => {
+    // Estado inicial limpo para o formulário
+    const estadoInicialForm = {
+        nome: '',
+        email: '',
+        avatar: 'https://i.pravatar.cc/150',
+        idade: 0,
+        nascimento: '',
+        nivelAcesso: '',
+        genero: '',
+        corFavorita: '#5a4ad1',
+        biografia: '',
+        ativo: true
     };
 
-    const [form, setForm] = useState(initialForm);
+    const [formData, setFormData] = useState(estadoInicialForm);
+    const [usuarios, setUsuarios] = useState([
+        {
+            id: 1,
+            nome: 'Ewerton Prof',
+            email: 'ewerton@etec.sp.gov.br',
+            nivelAcesso: 'Admin',
+            avatar: 'https://i.pravatar.cc/150?u=ewerton',
+            idade: 30,
+            nascimento: '1994-01-01',
+            genero: 'M',
+            corFavorita: '#5a4ad1',
+            biografia: 'Professor de TI',
+            ativo: true,
+            online: true
+        }
+    ]);
 
-    useEffect(() => {
-        // Simulação de leitura de API JSON
-        const dados = [
-            { id: 1, nome: 'Ewerton Prof', email: 'ewerton@etec.sp.gov.br', categoria: 'Admin', avatar: 'https://i.pravatar.cc/150?u=52' }
-        ];
-        setLista(dados);
-    }, []);
+    // NOVO ESTADO: Armazena o ID do usuário que está sendo editado
+    const [idEmEdicao, setIdEmEdicao] = useState(null);
 
-    const handleChange = (e) => {
+    const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
+        setFormData({
+            ...formData,
+            [name]: type === 'checkbox' ? checked : value
+        });
     };
 
-    // --- FUNÇÕES DO CRUD ---
-
-    const handleSalvar = (e) => {
-        e.preventDefault();
-
-        if (editingId) {
-            // UPDATE: Mapeia a lista e substitui o item com o ID correspondente
-            const listaAtualizada = lista.map(item =>
-                item.id === editingId ? { ...form, id: editingId } : item
-            );
-            setLista(listaAtualizada);
-            setEditingId(null);
-        } else {
-            // CREATE: Adiciona novo item com ID único
-            setLista([...lista, { ...form, id: Date.now() }]);
-        }
-
-        setForm(initialForm); // Limpa o formulário
-    };
-
-    const handleEdit = (item) => {
-        setEditingId(item.id);
-        setForm(item); // Preenche o formulário com os dados do item
-        window.scrollTo(0, 0); // Sobe a página para o formulário
-    };
-
-    const handleDelete = (id) => {
-        if (window.confirm("Deseja realmente excluir este registro?")) {
-            // DELETE: Filtra a lista removendo o ID selecionado
-            setLista(lista.filter(item => item.id !== id));
-        }
+    // FUNÇÃO DE EDIÇÃO: Preenche o formulário com os dados do usuário selecionado
+    const prepararEdicao = (user) => {
+        setFormData(user);
+        setIdEmEdicao(user.id);
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola para o topo para facilitar
     };
 
     const cancelarEdicao = () => {
-        setEditingId(null);
-        setForm(initialForm);
+        setFormData(estadoInicialForm);
+        setIdEmEdicao(null);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (idEmEdicao) {
+            // Lógica de ATUALIZAÇÃO
+            setUsuarios(usuarios.map(user =>
+                user.id === idEmEdicao ? { ...formData, id: idEmEdicao } : user
+            ));
+            alert('Cadastro atualizado com sucesso!');
+        } else {
+            // Lógica de CRIAÇÃO
+            const novoUsuario = {
+                id: Date.now(),
+                ...formData,
+                online: true
+            };
+            setUsuarios([...usuarios, novoUsuario]);
+            alert('Utilizador cadastrado com sucesso!');
+        }
+
+        // Limpa o formulário e o estado de edição
+        cancelarEdicao();
+    };
+
+    const excluirUsuario = (id) => {
+        if (window.confirm("Tem certeza que deseja excluir?")) {
+            setUsuarios(usuarios.filter(user => user.id !== id));
+            if (idEmEdicao === id) cancelarEdicao();
+        }
     };
 
     return (
-        <div className="container">
-            <h1 style={{ color: editingId ? '#f59e0b' : '#4f46e5' }}>
-                {editingId ? '📝 Editando Usuário' : '➕ Cadastrar Usuário'}
-            </h1>
+        <div className={styles.container}>
+            <header className={styles.header}>
+                <UserPlus color="#5a4ad1" size={32} />
+                <h1>{idEmEdicao ? 'Editar Usuário' : 'Cadastrar Usuário'}</h1>
+            </header>
 
-            <form onSubmit={handleSalvar} className={editingId ? 'editing-mode' : ''}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                    <section>
-                        <label>Nome</label>
-                        <input type="text" name="nome" value={form.nome} onChange={handleChange} required />
-
-                        <label>E-mail</label>
-                        <input type="email" name="email" value={form.email} onChange={handleChange} />
-
-                        <label>Idade</label>
-                        <input type="number" name="idade" value={form.idade} onChange={handleChange} />
-                    </section>
-
-                    <section>
-                        <label>Nível</label>
-                        <select name="categoria" value={form.categoria} onChange={handleChange}>
-                            <option value="">Selecione...</option>
-                            <option value="Admin">Admin</option>
-                            <option value="User">User</option>
-                        </select>
-
-                        <label>Gênero</label>
-                        <div className="inline-group">
-                            <input type="radio" name="genero" value="M" checked={form.genero === 'M'} onChange={handleChange} /> M
-                            <input type="radio" name="genero" value="F" checked={form.genero === 'F'} onChange={handleChange} /> F
+            <form className={styles.form} onSubmit={handleSubmit}>
+                <div className={styles.grid}>
+                    {/* Coluna Esquerda */}
+                    <div className={styles.column}>
+                        <div className={styles.field}>
+                            <label>Nome Completo</label>
+                            <input type="text" name="nome" value={formData.nome} onChange={handleInputChange} required />
                         </div>
-
-                        <div className="inline-group">
-                            <input type="checkbox" name="ativo" checked={form.ativo} onChange={handleChange} />
-                            <label>Ativo</label>
+                        <div className={styles.field}>
+                            <label>E-mail</label>
+                            <input type="email" name="email" value={formData.email} onChange={handleInputChange} required />
                         </div>
-                    </section>
+                        <div className={styles.field}>
+                            <label>URL do Avatar</label>
+                            <input type="text" name="avatar" value={formData.avatar} onChange={handleInputChange} />
+                        </div>
+                        <div className={styles.row}>
+                            <div className={styles.field}>
+                                <label>Idade</label>
+                                <input type="number" name="idade" value={formData.idade} onChange={handleInputChange} />
+                            </div>
+                            <div className={styles.field}>
+                                <label>Nascimento</label>
+                                <input type="date" name="nascimento" value={formData.nascimento} onChange={handleInputChange} />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Coluna Direita */}
+                    <div className={styles.column}>
+                        <div className={styles.field}>
+                            <label>Nível de Acesso</label>
+                            <select name="nivelAcesso" value={formData.nivelAcesso} onChange={handleInputChange} required>
+                                <option value="" disabled>Selecione...</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Editor">Editor</option>
+                                <option value="Comum">Comum</option>
+                            </select>
+                        </div>
+                        <div className={styles.optionsRow}>
+                            <div className={styles.field}>
+                                <label>Gênero:</label>
+                                <div className={styles.radioGroup}>
+                                    <label><input type="radio" name="genero" value="M" checked={formData.genero === 'M'} onChange={handleInputChange} /> M</label>
+                                    <label><input type="radio" name="genero" value="F" checked={formData.genero === 'F'} onChange={handleInputChange} /> F</label>
+                                </div>
+                            </div>
+                            <div className={styles.field}>
+                                <label>Cor Favorita:</label>
+                                <input type="color" name="corFavorita" className={styles.colorPicker} value={formData.corFavorita} onChange={handleInputChange} />
+                            </div>
+                        </div>
+                        <div className={styles.field}>
+                            <label>Biografia</label>
+                            <textarea name="biografia" rows="4" value={formData.biografia} onChange={handleInputChange}></textarea>
+                        </div>
+                    </div>
                 </div>
 
-                <button type="submit">{editingId ? 'Atualizar Dados' : 'Salvar Novo'}</button>
-                {editingId && <button type="button" className="btn-cancel" onClick={cancelarEdicao}>Cancelar</button>}
+                <div className={styles.activeUserRow}>
+                    <label className={styles.checkboxContainer}>
+                        <input
+                            type="checkbox"
+                            name="ativo"
+                            checked={formData.ativo}
+                            onChange={handleInputChange}
+                        />
+                        <span className={styles.checkmark}></span>
+                        Usuário Ativo
+                    </label>
+                </div>
+
+                <div className={styles.buttonGroup}>
+                    {idEmEdicao && (
+                        <button type="button" onClick={cancelarEdicao} className={styles.cancelBtn}>
+                            Cancelar Edição
+                        </button>
+                    )}
+                    <button type="submit" className={styles.submitBtn}>
+                        {idEmEdicao ? 'Salvar Alterações' : 'Finalizar Cadastro'}
+                    </button>
+                </div>
             </form>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Avatar</th>
-                        <th>Nome</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {lista.map(item => (
-                        <tr key={item.id}>
-                            <td><img src={item.avatar} alt="User" width="40" /></td>
-                            <td>{item.nome} <br /> <small>{item.email}</small></td>
-                            <td>
-                                <button className="btn-edit" onClick={() => handleEdit(item)}>Editar</button>
-                                <button className="btn-delete" onClick={() => handleDelete(item.id)}>Excluir</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <section className={styles.listSection}>
+                <h2>Listagem de Registros</h2>
+                <div className={styles.tableResponsive}>
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th>Perfil</th>
+                                <th>Detalhes</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {usuarios.map((user) => (
+                                <tr key={user.id}>
+                                    <td>
+                                        <img src={user.avatar} alt="Perfil" className={styles.avatarImg} />
+                                    </td>
+                                    <td className={styles.detailsCell}>
+                                        <strong>{user.nome}</strong>
+                                        <span>{user.email} | {user.nivelAcesso}</span>
+                                    </td>
+                                    <td>
+                                        <span className={user.online ? styles.statusOnline : styles.statusOffline}>
+                                            ● {user.online ? 'Online' : 'Offline'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div className={styles.actions}>
+                                            {/* BOTAO EDITAR AGORA FUNCIONAL */}
+                                            <button className={styles.editBtn} onClick={() => prepararEdicao(user)}>
+                                                Editar
+                                            </button>
+                                            <button className={styles.deleteBtn} onClick={() => excluirUsuario(user.id)}>
+                                                Excluir
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
     );
-}
+};
+
+export default CadastroUsuario;
