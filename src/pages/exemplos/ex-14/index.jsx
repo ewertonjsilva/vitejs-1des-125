@@ -3,8 +3,8 @@
         Aqui é onde o React brilha. Nós monitoramos o que o usuário digita e validamos em tempo real usando o useState.
 
     Atividade: 
-        1- Criar um estado password e exibir o número de caracteres da senha em tempo real abaixo do input.
-        2- Por que validar no onChange (tempo real) vs no onSubmit (ao clicar)? Agora crie um formulário com e-mail, senha e confirmação de senha com  a validação sendo executada no onSubmit.
+        7- Criar um estado password e exibir o número de caracteres da senha em tempo real abaixo do input.
+        8- Por que validar no onChange (tempo real) vs no onSubmit (ao clicar)? Agora crie um formulário com e-mail, senha e confirmação de senha com  a validação sendo executada no onSubmit.
         
 */
 
