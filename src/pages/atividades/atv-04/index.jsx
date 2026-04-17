@@ -1,60 +1,86 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './index.module.css';
 
-function Atividade04() {
-  const [inputValue, setInputValue] = useState({
-    id: '',
-    quantidade: '',
-    produto: ''
-  });
-  const [dadosCadastrados, setDadosCadastrados] = useState([]);
+export default function Atividade04() {
+    const [inputValue, setInputValue] = useState({ quantidade: '', produto: '' });
+    const [dadosCadastrados, setDadosCadastrados] = useState([]);
+    const [editandoId, setEditandoId] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!inputValue.produto || !inputValue.quantidade) return;
+    const [tema, setTema] = useState('light');
 
-    // Adiciona o novo item e gera um ID único
-    const novoItem = { ...inputValue, id: Date.now() };
-    setDadosCadastrados([...dadosCadastrados, novoItem]);
+    useEffect(() => {
+        // Aplica o atributo no HTML para o CSS ler
+        document.documentElement.setAttribute('data-theme', tema);
+    }, [tema]);
 
-    // Limpa os campos
-    setInputValue({ id: '', quantidade: '', produto: '' });
-  };
-  
+    const toggleTema = () => {
+        setTema(tema === 'light' ? 'dark' : 'light');
+    };
 
-  return (
-    <div className={styles.container}>
-      <h1>Atividade 4 - Lista de compra</h1>
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!inputValue.produto || !inputValue.quantidade) return;
 
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <input
-          type="number"
-          value={inputValue.quantidade}
-          onChange={(e) => setInputValue({ ...inputValue, quantidade: e.target.value })}
-          placeholder="Qtd"
-        />
-        <input
-          type="text"
-          value={inputValue.produto}
-          onChange={(e) => setInputValue({ ...inputValue, produto: e.target.value })}
-          placeholder="Produto..."
-        />
-        <button type="submit">Adicionar</button>
-      </form>
+        if (editandoId) {
+            setDadosCadastrados(dadosCadastrados.map(item =>
+                item.id === editandoId ? { ...item, ...inputValue } : item
+            ));
+            setEditandoId(null);
+        } else {
+            setDadosCadastrados([...dadosCadastrados, { ...inputValue, id: Date.now() }]);
+        }
+        setInputValue({ quantidade: '', produto: '' });
+    };
 
-      {dadosCadastrados.length > 0 && <h2>Lista de compras</h2>}
+    const handleRemoveItem = (id) => {
+        setDadosCadastrados(dadosCadastrados.filter(item => item.id !== id));
+    };
 
-      <ul className={styles.lista}>
-        {dadosCadastrados.map((item) => (
-          <li key={item.id} className={styles.linha}>
-            <span className={styles.conteudo}>
-              {item.quantidade}x {item.produto}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    const handleEditItem = (item) => {
+        setInputValue({ quantidade: item.quantidade, produto: item.produto });
+        setEditandoId(item.id);
+    };
+
+    return (
+        <div className={styles.container}>
+            <header className={styles.header}>
+                <h1>Atividade 4 - Lista de compra</h1>
+                <button onClick={toggleTema} className={styles.btnTema}>
+                    {tema === 'light' ? '🌙 Modo Escuro' : '☀️ Modo Claro'}
+                </button>
+            </header>
+
+            <form className={styles.form} onSubmit={handleSubmit}>
+                <input
+                    className={styles.input}
+                    type="number"
+                    value={inputValue.quantidade}
+                    onChange={(e) => setInputValue({ ...inputValue, quantidade: e.target.value })}
+                    placeholder="Qtd"
+                />
+                <input
+                    className={styles.input}
+                    type="text"
+                    value={inputValue.produto}
+                    onChange={(e) => setInputValue({ ...inputValue, produto: e.target.value })}
+                    placeholder="Produto..."
+                />
+                <button type="submit" className={styles.btnPrincipal}>
+                    {editandoId ? 'Salvar' : 'Adicionar'}
+                </button>
+            </form>
+
+            <ul className={styles.lista}>
+                {dadosCadastrados.map((item) => (
+                    <li key={item.id} className={styles.linha}>
+                        <span className={styles.conteudo}>{item.quantidade}x {item.produto}</span>
+                        <div className={styles.acoes}>
+                            <button onClick={() => handleEditItem(item)}>Editar</button>
+                            <button onClick={() => handleRemoveItem(item.id)}>Excluir</button>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }
-
-export default Atividade04;

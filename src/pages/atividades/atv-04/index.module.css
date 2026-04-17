@@ -1,130 +1,225 @@
-/* Container Principal */
+/*
+    O :root é uma pseudo-classe do CSS que seleciona o elemento de maior nível na árvore 
+    do documento (geralmente o <html>). Na prática, ele funciona como o "cofre global de 
+    variáveis" do seu projeto.
+
+    Ao definir algo no :root do seu CSS Global, todos os seus arquivos de 
+    CSS Individual (index.module.css) conseguem acessar esses valores.
+
+*/
+
+/* Valores padrão (Tema Claro) */
+:root {
+    --bg-app: #f4f7f6;
+    --bg-card: #ffffff;
+    --bg-item: #f9f9f9;
+    /* Fundo do LI no modo claro */
+    --text-main: #333333;
+    --primary: #7f0000;
+    --border-color: #eeeeee;
+    --input-bg: #ffffff;
+    --btn-edit-bg: #ebf5ff;
+    --btn-del-bg: #fff0f0;
+}
+
+[data-theme='dark'] {
+    --bg-app: #121212;
+    --bg-card: #1e1e1e;
+    --bg-item: #2a2a2a;
+    /* Fundo do LI no modo escuro (levemente mais claro que o card) */
+    --text-main: #f5f5f5;
+    --primary: #ff4d4d;
+    --border-color: #333333;
+    --input-bg: #2d2d2d;
+    --btn-edit-bg: #1a3a5a;
+    /* Azul escuro para o botão editar */
+    --btn-del-bg: #4a1a1a;
+    /* Vermelho escuro para o botão excluir */
+}
+
+/* Aplique as variáveis no body */
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    transition: background-color 0.3s, color 0.3s;
+}
+
 .container {
-    max-width: 600px;
+    max-width: 500px;
     margin: 2rem auto;
     padding: 2rem;
-    font-family: 'Inter', -apple-system, sans-serif;
-    background-color: #f8fafc;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background-color: var(--bg-card);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-main);
 }
 
-.container h1 {
-    color: #1e293b;
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-
-/* Formulário Responsivo */
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-/* Inputs */
-.form input {
-    padding: 0.75rem 1rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
-}
-
-.form input:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Botão */
-.form button {
-    padding: 0.75rem;
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.form button:hover {
-    background-color: #2563eb;
-}
-
-/* Lista de Itens */
-.lista {
-    list-style: none;
-    padding: 0;
-    margin-top: 1rem;
-}
-
-.linha {
-    background: white;
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    border-radius: 8px;
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #e2e8f0;
-    animation: slideIn 0.3s ease-out;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.btnTema {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: 0.5rem;
+}
+
+.input {
+    background-color: var(--input-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+.linha {
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+}
+
+h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.form {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.form input {
+    padding: 0.8rem 1rem;
+    background-color: var(--input-bg);
+    /* Adicionado */
+    color: var(--text-main);
+    /* Adicionado */
+    border: 2px solid var(--border-color);
+    /* Trocado #eee por variável */
+    border-radius: 0.8rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form input[type="number"] {
+    width: 70px;
+}
+
+.form input[type="text"] {
+    flex: 1;
+}
+
+.form input:focus {
+    border-color: var(--primary);
+}
+
+.form button {
+    padding: 0.8rem 1.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.form button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.lista {
+    list-style: none;
+    padding: 0;
+}
+
+.linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--bg-item);
+    /* Trocado #f9f9f9 por variável */
+    border-radius: 1rem;
+    margin-bottom: 0.8rem;
+    transition: transform 0.2s;
+    border: 1px solid var(--border-color);
+    /* Trocado transparente por variável */
+    color: var(--text-main);
+}
+
+.linha:hover {
+    transform: scale(1.02);
+    border-color: var(--primary);
+    /* Destaque no hover com a cor primária */
 }
 
 .conteudo {
-    color: #334155;
     font-weight: 500;
+    color: var(--text-main);
 }
 
-/* Animação simples ao adicionar */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.acoes {
+    display: flex;
+    gap: 0.5rem;
 }
 
-/* --- Media Queries para Responsividade --- */
-
-@media (min-width: 480px) {
-
-    /* No desktop, os inputs ficam lado a lado */
-    .form {
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .form input[type="number"] {
-        width: 80px;
-        /* Campo de quantidade menor */
-    }
-
-    .form input[type="text"] {
-        flex: 1;
-        /* Campo de produto ocupa o resto */
-    }
-
-    .form button {
-        padding: 0.75rem 1.5rem;
-    }
+.acoes button {
+    padding: 0.5rem 0.8rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-@media (max-width: 479px) {
-    .container {
-        margin: 1rem;
-        padding: 1.5rem;
-    }
+.acoes button:hover {
+    filter: brightness(1.2);
+    /* Efeito de hover universal */
+    color: white !important;
+}
 
-    .form button {
-        width: 100%;
-        /* Botão ocupa tudo no mobile */
-    }
+/* Botão Editar */
+.acoes button:first-child {
+    background-color: var(--btn-edit-bg);
+    color: #3498db;
+    /* Azul se mantém para ícone/texto */
+}
+
+.acoes button:first-child:hover {
+    background-color: var(--edit);
+    color: white;
+}
+
+/* Botão Excluir */
+.acoes button:last-child {
+    background-color: var(--btn-del-bg);
+    color: #e74c3c;
+    /* Vermelho se mantém para ícone/texto */
+}
+
+.acoes button:last-child:hover {
+    background-color: var(--danger);
+    color: white;
+}
+
+/* Estado vazio */
+h2 {
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
 }
