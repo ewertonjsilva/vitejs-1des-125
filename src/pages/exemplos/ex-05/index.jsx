@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import styles from './index.module.css';
 
-export default function FormComponent() {
+export default function Exemplo05() {
 
     // const [formData, setFormData] = useState({ nome: '', email: '' });
     const [login, setLogin] = useState('');
