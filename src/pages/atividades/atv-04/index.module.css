@@ -20,22 +20,11 @@
     --input-bg: #ffffff;
     --btn-edit-bg: #ebf5ff;
     --btn-del-bg: #fff0f0;
+    --danger: #7f0000;
+    --edit: #3498db;
 }
 
-[data-theme='dark'] {
-    --bg-app: #121212;
-    --bg-card: #1e1e1e;
-    --bg-item: #2a2a2a;
-    /* Fundo do LI no modo escuro (levemente mais claro que o card) */
-    --text-main: #f5f5f5;
-    --primary: #ff4d4d;
-    --border-color: #333333;
-    --input-bg: #2d2d2d;
-    --btn-edit-bg: #1a3a5a;
-    /* Azul escuro para o botão editar */
-    --btn-del-bg: #4a1a1a;
-    /* Vermelho escuro para o botão excluir */
-}
+
 
 /* Aplique as variáveis no body */
 body {
@@ -53,6 +42,21 @@ body {
     box-shadow: var(--shadow);
     font-family: 'Inter', system-ui, sans-serif;
     color: var(--text-main);
+}
+
+.container[data-theme='dark'] {
+    --bg-app: #121212;
+    --bg-card: #1e1e1e;
+    --bg-item: #2a2a2a;
+    /* Fundo do LI no modo escuro (levemente mais claro que o card) */
+    --text-main: #f5f5f5;
+    --primary: #ff4d4d;
+    --border-color: #333333;
+    --input-bg: #2d2d2d;
+    --btn-edit-bg: #1a3a5a;
+    /* Azul escuro para o botão editar */
+    --btn-del-bg: #4a1a1a;
+    /* Vermelho escuro para o botão excluir */
 }
 
 .header {
@@ -83,7 +87,7 @@ body {
     border: 1px solid var(--border-color);
 }
 
-h1 {
+.titulo {
     font-size: 1.5rem;
     text-align: center;
     margin-bottom: 2rem;
@@ -190,6 +194,10 @@ h1 {
     color: white !important;
 }
 
+.btnPrincipal:hover {
+    border: 0.3rem solid #ff4d4d;
+}
+
 /* Botão Editar */
 .acoes button:first-child {
     background-color: var(--btn-edit-bg);
@@ -215,7 +223,7 @@ h1 {
 }
 
 /* Estado vazio */
-h2 {
+.subtitulo {
     font-size: 1.1rem;
     margin-top: 1.5rem;
     margin-bottom: 1rem;
